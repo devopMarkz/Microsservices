@@ -1,8 +1,13 @@
 spring:
   application:
     name: erudio-config-server
-  profiles:
-    active: native
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/devopMarkz/config-server
+          search-paths: '{application}'
+          clone-on-start: true
 
 server:
   port: 8888
