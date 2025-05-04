@@ -1,6 +1,7 @@
 package io.github.devopMarkz.book_service.controller;
 
 import io.github.devopMarkz.book_service.model.Book;
+import io.github.devopMarkz.book_service.proxy.CambioProxy;
 import io.github.devopMarkz.book_service.repository.BookRepository;
 import io.github.devopMarkz.book_service.response.Cambio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,28 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private CambioProxy cambioProxy;
+
     @GetMapping("/{id}/{currency}")
+    public Book findBook(
+            @PathVariable("id") Long id,
+            @PathVariable("currency") String currency
+    ) {
+        var book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+
+        var cambio = cambioProxy.getCambio(book.getPrice(), "USD", currency);
+
+        var port = environment.getProperty("local.server.port");
+
+        book.setEnvironment(port);
+
+        book.setPrice(cambio.getConvertedValue());
+
+        return book;
+    }
+
+    /* @GetMapping("/{id}/{currency}")
     public Book findBook(
             @PathVariable("id") Long id,
             @PathVariable("currency") String currency
@@ -49,6 +71,6 @@ public class BookController {
         book.setPrice(cambio.getConvertedValue());
 
         return book;
-    }
+    }*/
 
 }
