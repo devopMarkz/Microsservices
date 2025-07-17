@@ -1,0 +1,44 @@
+server:
+  port: 8100
+
+spring:
+  application:
+    name: book-service
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/book_service
+    password: aluno
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  management:
+    tracing:
+      sampling:
+        probability: 1.0
+
+  flyway:
+    url: jdbc:mysql://localhost:3306/book_service
+    user: root
+    password: aluno
+
+resilience4j:
+  retry:
+    instances:
+      default:
+        max-attempts: 5
+        wait-duration: 2s
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+springdoc:
+  api-docs:
+    path: /book-service/v3/api-docs
+  swagger-ui:
+    url: /book-service/v3/api-docs
