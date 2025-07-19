@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   zipkin-server:
-    image: openzipkin/zipkin:3.5.1
+    image: devmarkz/zipkin-server:latest
     ports:
       - "9411:9411"
     restart: always
@@ -20,6 +20,9 @@ services:
       - erudio-network
     depends_on:
       - zipkin-server
+    # Aqui definimos a tag personalizada
+    args:
+      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   api-gateway:
     image: devmarkz/api-gateway:latest
@@ -36,6 +39,9 @@ services:
     depends_on:
       - zipkin-server
       - naming-server
+    # Aqui definimos a tag personalizada
+    args:
+      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   exchange-service:
     image: devmarkz/exchange-service:latest
@@ -57,6 +63,9 @@ services:
       - api-gateway
       - zipkin-server
       - exchange-db
+    # Aqui definimos a tag personalizada
+    args:
+      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   book-service:
     image: devmarkz/book-service:latest
@@ -78,6 +87,9 @@ services:
       - api-gateway
       - zipkin-server
       - book-db
+    # Aqui definimos a tag personalizada
+    args:
+      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   book-db:
     image: mysql:9.3.0
