@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   zipkin-server:
     image: openzipkin/zipkin:3.5.1
@@ -9,6 +10,7 @@ services:
       - erudio-network
 
   naming-server:
+    image: devmarkz/naming-server:latest
     build:
       context: ./naming-server
     ports:
@@ -20,6 +22,7 @@ services:
       - zipkin-server
 
   api-gateway:
+    image: devmarkz/api-gateway:latest
     build:
       context: ./api-gateway
     ports:
@@ -35,6 +38,7 @@ services:
       - naming-server
 
   exchange-service:
+    image: devmarkz/exchange-service:latest
     build:
       context: ./exchange-service
     ports:
@@ -55,6 +59,7 @@ services:
       - exchange-db
 
   book-service:
+    image: devmarkz/book-service:latest
     build:
       context: ./book-service
     ports:
