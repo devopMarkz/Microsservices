@@ -36,9 +36,9 @@ jobs:
       # Passo 5: Construção das imagens Docker para todos os microsserviços
       - name: Build Docker Images using Docker Compose  # O comando docker-compose irá construir todas as imagens de uma vez
         working-directory: ./Microsservicos ATUALIZADOS  # Define o diretório onde o docker-compose.yml está localizado
-        run: docker-compose build  # Construa todas as imagens Docker definidas no arquivo docker-compose.yml
+        run: docker compose build  # Construa todas as imagens Docker definidas no arquivo docker-compose.yml
 
       # Passo 6: Enviar as imagens Docker para o Docker Hub
       - name: Tag and Push Docker Images to Docker Hub  # Empurra as imagens para o Docker Hub com as tags certas
         run: |
-          docker-compose push
+          docker compose push
