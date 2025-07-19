@@ -13,6 +13,8 @@ services:
     image: devmarkz/naming-server:latest
     build:
       context: ./naming-server
+      args:
+        TAG: ${TAG}  # Passa a variável TAG para o Dockerfile
     ports:
       - "8761:8761"
     restart: always
@@ -20,14 +22,13 @@ services:
       - erudio-network
     depends_on:
       - zipkin-server
-    # Aqui definimos a tag personalizada
-    args:
-      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   api-gateway:
     image: devmarkz/api-gateway:latest
     build:
       context: ./api-gateway
+      args:
+        TAG: ${TAG}  # Passa a variável TAG para o Dockerfile
     ports:
       - "8765:8765"
     restart: always
@@ -39,14 +40,13 @@ services:
     depends_on:
       - zipkin-server
       - naming-server
-    # Aqui definimos a tag personalizada
-    args:
-      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   exchange-service:
     image: devmarkz/exchange-service:latest
     build:
       context: ./exchange-service
+      args:
+        TAG: ${TAG}  # Passa a variável TAG para o Dockerfile
     ports:
       - "8000:8000"
     restart: always
@@ -63,14 +63,13 @@ services:
       - api-gateway
       - zipkin-server
       - exchange-db
-    # Aqui definimos a tag personalizada
-    args:
-      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   book-service:
     image: devmarkz/book-service:latest
     build:
       context: ./book-service
+      args:
+        TAG: ${TAG}  # Passa a variável TAG para o Dockerfile
     ports:
       - "8100:8100"
     restart: always
@@ -87,9 +86,6 @@ services:
       - api-gateway
       - zipkin-server
       - book-db
-    # Aqui definimos a tag personalizada
-    args:
-      - TAG=${TAG}  # Passa a tag personalizada (SHA do commit) para o build
 
   book-db:
     image: mysql:9.3.0
