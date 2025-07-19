@@ -5,24 +5,25 @@ spring:
   application:
     name: book-service
   datasource:
-    username: root
-    url: jdbc:mysql://localhost:3306/book_service
-    password: aluno
+    username: ${MYSQL_USER:root}
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/book_service}
+    password: ${MYSQL_PASSWORD:aluno}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
-
+  zipkin:
+    base-url: ${ZIPKIN_URL:http://localhost:9411}
   management:
     tracing:
       sampling:
         probability: 1.0
 
   flyway:
-    url: jdbc:mysql://localhost:3306/book_service
-    user: root
-    password: aluno
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/book_service}
+    user: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:aluno}
 
 resilience4j:
   retry:
@@ -35,7 +36,7 @@ resilience4j:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
 
 springdoc:
   api-docs:

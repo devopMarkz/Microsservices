@@ -1,0 +1,104 @@
+version: '3.8'
+services:
+  zipkin-server:
+    image: openzipkin/zipkin:3.5.1
+    ports:
+      - "9411:9411"
+    restart: always
+    networks:
+      - erudio-network
+
+  naming-server:
+    build:
+      context: ./naming-server
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - erudio-network
+    depends_on:
+      - zipkin-server
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "8765:8765"
+    restart: always
+    environment:
+      ZIPKIN_URL: http://zipkin-server:9411
+      EUREKA_URL: http://naming-server:8761/eureka
+    networks:
+      - erudio-network
+    depends_on:
+      - zipkin-server
+      - naming-server
+
+  exchange-service:
+    build:
+      context: ./exchange-service
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - erudio-network
+    environment:
+      ZIPKIN_URL: http://zipkin-server:9411
+      EUREKA_URL: http://naming-server:8761/eureka
+      DB_URL: jdbc:mysql://exchange-db:3306/exchange_service
+      DB_USERNAME: root
+      DB_PASSWORD: aluno
+    depends_on:
+      - naming-server
+      - api-gateway
+      - zipkin-server
+      - exchange-db
+
+  book-service:
+    build:
+      context: ./book-service
+    ports:
+      - "8100:8100"
+    restart: always
+    networks:
+      - erudio-network
+    environment:
+      ZIPKIN_URL: http://zipkin-server:9411
+      EUREKA_URL: http://naming-server:8761/eureka
+      MYSQL_URL: jdbc:mysql://book-db:3306/book_service
+      MYSQL_USER: root
+      MYSQL_PASSWORD: aluno
+    depends_on:
+      - naming-server
+      - api-gateway
+      - zipkin-server
+      - book-db
+
+  book-db:
+    image: mysql:9.3.0
+    ports:
+      - "3310:3306"
+    restart: always
+    networks:
+      - erudio-network
+    environment:
+      TIMEZONE: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: aluno
+      MYSQL_DATABASE: book_service
+
+  exchange-db:
+    image: mysql:9.3.0
+    ports:
+      - "3308:3306"
+    restart: always
+    networks:
+      - erudio-network
+    environment:
+      TIMEZONE: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: aluno
+      MYSQL_DATABASE: exchange_service
+
+networks:
+  erudio-network:
+    name: erudio-network
+    driver: bridge
