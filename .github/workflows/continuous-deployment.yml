@@ -39,6 +39,7 @@ jobs:
         run: docker compose build  # Construa todas as imagens Docker definidas no arquivo docker-compose.yml
 
       # Passo 6: Enviar as imagens Docker para o Docker Hub
-      - name: Tag and Push Docker Images to Docker Hub  # Empurra as imagens para o Docker Hub com as tags certas
+      - name: Tag and Push Docker Images to Docker Hub  # Empurra as imagens para o Docker Hub com as tags certas]
+        working-directory: ./Microsservicos ATUALIZADOS
         run: |
           docker compose push
