@@ -45,4 +45,10 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}/return-stock")
+    public ResponseEntity<Void> reporEstoque(@PathVariable Long id, @RequestBody Map<String, Integer> obj){
+        produtoService.returnStock(id, obj);
+        return ResponseEntity.noContent().build();
+    }
+
 }

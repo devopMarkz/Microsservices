@@ -49,14 +49,28 @@ public class ProdutoService {
 
     @Transactional
     public void decreaseStock(Long id, Map<String, Integer> obj){
-        if(!obj.containsKey("quantidade")){
-            throw new IllegalArgumentException("Campo 'quantidade' precisa estar presente no corpo da requisição.");
-        }
+        verificaChaveMap(obj);
 
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado."));
 
         produto.retirarEstoque(obj.get("quantidade"));
+    }
+
+    @Transactional
+    public void returnStock(Long id, Map<String, Integer> obj){
+        verificaChaveMap(obj);
+
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Produto não encontrado."));
+
+        produto.reporEstoque(obj.get("quantidade"));
+    }
+
+    private void verificaChaveMap(Map<String, Integer> obj){
+        if(!obj.containsKey("quantidade")){
+            throw new IllegalArgumentException("Campo 'quantidade' precisa estar presente no corpo da requisição.");
+        }
     }
 
 }
