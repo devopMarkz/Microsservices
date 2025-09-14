@@ -22,3 +22,25 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+resilience4j:
+  retry:
+    instances:
+      default:
+        max-attempts: 3
+        wait-duration:
+          seconds: 3
+        retry-exceptions:
+          - java.lang.Throwable
+
+  timelimiter:
+    instances:
+      timelimiter-busca-id:
+        timeout-duration:
+          seconds: 10
