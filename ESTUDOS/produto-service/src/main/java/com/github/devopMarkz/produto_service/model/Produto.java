@@ -3,6 +3,8 @@ package com.github.devopMarkz.produto_service.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "tb_produtos")
 @Getter
@@ -21,7 +23,7 @@ public class Produto {
     private String nome;
 
     @Column(name = "preco", nullable = false)
-    private Double preco;
+    private BigDecimal preco;
 
     @Column(name = "quantidade_em_estoque", nullable = false)
     private Integer quantidadeEmEstoque;

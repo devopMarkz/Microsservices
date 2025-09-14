@@ -39,13 +39,13 @@ public class ProdutoController {
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/{id}/decrease-stock")
+    @PutMapping("/{id}/decrease-stock")
     public ResponseEntity<Void> retirarEstoque(@PathVariable Long id, @RequestBody Map<String, Integer> obj){
         produtoService.decreaseStock(id, obj);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/return-stock")
+    @PutMapping("/{id}/return-stock")
     public ResponseEntity<Void> reporEstoque(@PathVariable Long id, @RequestBody Map<String, Integer> obj){
         produtoService.returnStock(id, obj);
         return ResponseEntity.noContent().build();
