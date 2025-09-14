@@ -28,8 +28,6 @@ public class PedidoService {
     private final ItemPedidoRepository itemPedidoRepository;
     private final ProdutoFeignClient produtoFeignClient;
 
-    private Map<Long, Integer> objCache = new HashMap<>();
-
     public PedidoService(ClienteRepository clienteRepository,
                          PedidoRepository pedidoRepository,
                          ItemPedidoRepository itemPedidoRepository,
@@ -139,6 +137,8 @@ public class PedidoService {
             throw new IllegalArgumentException("Pedido não pode ser confirmado. Status atual: " + pedido.getStatus());
         }
 
+        Map<Long, Integer> objCache = new HashMap<>();
+
         try{
             for(ItemPedido item : pedido.getItens()){
                 Map<String, Integer> obj = new HashMap<>();
@@ -156,8 +156,6 @@ public class PedidoService {
             }
 
            throw new IllegalArgumentException("Erro ao retirar estoque.", e);
-        } finally {
-            objCache.clear();
         }
     }
 
