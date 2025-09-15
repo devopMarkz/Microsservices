@@ -30,8 +30,8 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoService.buscarPorFiltros(id, nome));
     }
 
-    @Retry(name = "default")
-    @TimeLimiter(name = "timelimiter-busca-id", fallbackMethod = "fallbackBuscaId")
+//    @Retry(name = "default")
+//    @TimeLimiter(name = "timelimiter-busca-id", fallbackMethod = "fallbackBuscaId")
     @GetMapping("/{id}")
     public ResponseEntity<Produto> buscarPorId(@PathVariable Long id){
         return ResponseEntity.ok(produtoService.buscarPorId(id));
@@ -44,14 +44,14 @@ public class ProdutoController {
         return ResponseEntity.created(location).build();
     }
 
-    @Retry(name = "default")
+    //@Retry(name = "default")
     @PutMapping("/{id}/decrease-stock")
     public ResponseEntity<Void> retirarEstoque(@PathVariable Long id, @RequestBody Map<String, Integer> obj){
         produtoService.decreaseStock(id, obj);
         return ResponseEntity.noContent().build();
     }
 
-    @Retry(name = "default")
+   // @Retry(name = "default")
     @PutMapping("/{id}/return-stock")
     public ResponseEntity<Void> reporEstoque(@PathVariable Long id, @RequestBody Map<String, Integer> obj){
         produtoService.returnStock(id, obj);
